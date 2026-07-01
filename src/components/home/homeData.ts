@@ -19,7 +19,7 @@ export const site = {
 export const navItems: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Editorial Board", href: "/editorial-board" },
-  { label: "Processing Charges", href: "/processing-charges" },
+  { label: "Our Journals", href: "/journals" },
   { label: "Paper Submission", href: "/paper-submission" },
   {
     label: "Issues",
