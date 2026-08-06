@@ -3,14 +3,12 @@
 import Link from "next/link";
 import {
   ArrowLeft,
-  Clock,
   Download,
-  ExternalLink,
+  Eye,
   FileText,
   Loader2,
 } from "lucide-react";
 import { useGetIssueById } from "@/src/hooks";
-import { formatToIST } from "@/src/lib/formatDate";
 
 type IssueDetailScreenProps = {
   journalId: string;
@@ -46,11 +44,12 @@ export default function IssueDetailScreen({ journalId, issueId }: IssueDetailScr
               Issue PDFs
             </p>
             <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{issue.issueLabel}</h1>
-            {issue.title ? <p className="mt-2 text-sm text-blue-100">{issue.title}</p> : null}
-            <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-blue-100">
-              <Clock className="h-3.5 w-3.5" aria-hidden />
-              Published {formatToIST(issue.created_at)}
-            </p>
+            {issue.title ? <p className="mt-2 text-sm font-medium text-blue-50">{issue.title}</p> : null}
+            {issue.description ? (
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-blue-100">
+                {issue.description}
+              </p>
+            ) : null}
           </div>
 
           <div className="mb-6">
@@ -67,33 +66,50 @@ export default function IssueDetailScreen({ journalId, issueId }: IssueDetailScr
             </div>
           ) : (
             <ul className="space-y-3">
-              {issue.pdfs.map((pdf, index) => (
+              {issue.pdfs.map((pdf) => (
                 <li
                   key={pdf._id}
                   className="flex flex-col gap-3 rounded-2xl border border-[#ededed] bg-white p-5 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between sm:p-6"
                 >
                   <div className="min-w-0 flex-1">
-                    {/* <p className="text-xs font-medium text-[#858c93]">#{index + 1}</p> */}
-                    <h3 className="mt-1 text-base font-semibold text-[#092151]">{pdf.title}</h3>
-                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[#858c93]">
-                      <Clock className="h-3.5 w-3.5 text-[#036eb6]" aria-hidden />
-                      Uploaded {formatToIST(pdf.created_at)}
-                    </p>
+                    <h3 className="text-base font-semibold text-[#092151]">{pdf.title}</h3>
+                    {pdf.author ? (
+                      <p className="mt-1.5 text-sm text-[#334155]">
+                        <span className="font-medium text-[#858c93]">Author:</span> {pdf.author}
+                      </p>
+                    ) : null}
+                    {pdf.doi ? (
+                      <p className="mt-1 text-sm text-[#334155]">
+                        <span className="font-medium text-[#858c93]">DOI:</span>{" "}
+                        {pdf.doi.startsWith("http") ? (
+                          <a
+                            href={pdf.doi}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="break-all text-[#024081] hover:underline"
+                          >
+                            {pdf.doi}
+                          </a>
+                        ) : (
+                          <span className="break-all">{pdf.doi}</span>
+                        )}
+                      </p>
+                    ) : null}
                   </div>
 
                   <div className="flex shrink-0 gap-2">
-                    <a
-                      href={pdf.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href={`/journals/${journalId}/issues/${issueId}/pdf/${pdf._id}`}
                       className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-[#024081] transition hover:bg-blue-50"
                     >
-                      <ExternalLink className="h-4 w-4" aria-hidden />
+                      <Eye className="h-4 w-4" aria-hidden />
                       View
-                    </a>
+                    </Link>
                     <a
                       href={pdf.pdfUrl}
                       download
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 rounded-lg bg-linear-to-r from-[#024081] to-[#036eb6] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
                     >
                       <Download className="h-4 w-4" aria-hidden />

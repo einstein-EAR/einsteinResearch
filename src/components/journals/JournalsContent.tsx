@@ -12,6 +12,7 @@ export default function JournalsContent() {
   const searchParams = useSearchParams();
   const journalId = searchParams.get("journalId");
   const issueId = searchParams.get("issueId");
+  const searchQuery = searchParams.get("q")?.trim() ?? "";
 
   const {
     data: journals,
@@ -33,6 +34,18 @@ export default function JournalsContent() {
     isError: issuesError,
     error: issuesErrorData,
   } = useIssuesByJournal(journalId);
+
+  const filteredJournals =
+    searchQuery && journals
+      ? journals.filter((item) => {
+          const needle = searchQuery.toLowerCase();
+          return (
+            item.title.toLowerCase().includes(needle) ||
+            item.description.toLowerCase().includes(needle) ||
+            item.serialNumber.toLowerCase().includes(needle)
+          );
+        })
+      : journals;
 
   if (journalId && issueId) {
     return (
@@ -136,7 +149,9 @@ export default function JournalsContent() {
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Our Journals</h1>
         <p className="mt-2 max-w-2xl text-sm text-blue-100">
-          Browse our peer-reviewed journals, open published issues, and download or view PDFs.
+          {searchQuery
+            ? `Showing results for “${searchQuery}”.`
+            : "Browse our peer-reviewed journals, open published issues, and download or view PDFs."}
         </p>
       </div>
 
@@ -145,7 +160,11 @@ export default function JournalsContent() {
           {journalsErrorData.message || "Failed to load journals."}
         </div>
       ) : (
-        <JournalsList journals={journals ?? []} isLoading={journalsLoading} />
+        <JournalsList
+          journals={filteredJournals ?? []}
+          isLoading={journalsLoading}
+          searchQuery={searchQuery}
+        />
       )}
     </div>
   );

@@ -21,14 +21,14 @@ export const navItems: NavLink[] = [
   { label: "Editorial Board", href: "/editorial-board" },
   { label: "Our Journals", href: "/journals" },
   { label: "Paper Submission", href: "/paper-submission" },
-  {
-    label: "Issues",
-    href: "/volumes",
-    children: volumes.map((volume) => ({
-      label: volume.title,
-      href: `/volumes/${volume.id}`,
-    })),
-  },
+  // {
+  //   label: "Issues",
+  //   href: "/volumes",
+  //   children: volumes.map((volume) => ({
+  //     label: volume.title,
+  //     href: `/volumes/${volume.id}`,
+  //   })),
+  // },
   { label: "Indexing", href: "/indexing" },
   { label: "Conferences", href: "/#conferences" },
   { label: "Contact", href: "/contactUs" },

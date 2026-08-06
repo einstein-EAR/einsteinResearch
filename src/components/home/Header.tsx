@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 import { navItems, site } from "./homeData";
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -40,8 +43,10 @@ const navLinkClass =
   "rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors duration-300 hover:bg-white hover:text-[#024081] hover:shadow-sm";
 
 export function Header() {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -49,6 +54,15 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (!query) return;
+
+    router.push(`/search?query=${encodeURIComponent(query)}`);
+    setMobileOpen(false);
+  };
 
   return (
     <header className="w-full shrink-0">
@@ -76,28 +90,42 @@ export function Header() {
 
       <div className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-3 lg:px-8">
-          <a href="/" className="min-w-0 shrink">
+          <Link href="/" className="min-w-0 shrink">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#036eb6] sm:text-xs">
               {site.name}
             </p>
             <p className="truncate text-base font-bold text-[#092151] sm:text-lg">
               {site.tagline}
             </p>
-          </a>
+          </Link>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href="/payment"
-              className="hidden rounded-full bg-[#024081] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-[#036eb6] hover:shadow-md sm:inline-flex"
+            <form
+              onSubmit={handleSearch}
+              className="hidden sm:block"
+              role="search"
             >
-              Pay Now
-            </a>
-            <a
-              href="/paper-submission"
-              className="hidden rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-[#024081] transition-all duration-300 hover:bg-blue-100 md:inline-flex"
-            >
-              Submit Paper
-            </a>
+              <label htmlFor="header-search" className="sr-only">
+                Search papers
+              </label>
+              <div className="flex h-10 w-52 items-center overflow-hidden rounded-lg border border-slate-200 bg-white transition focus-within:border-[#036eb6] focus-within:ring-2 focus-within:ring-[#036eb6]/20 md:w-64 lg:w-80">
+                <input
+                  id="header-search"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search papers..."
+                  className="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-sm text-[#092151] outline-none placeholder:text-[#858c93]"
+                />
+                <button
+                  type="submit"
+                  aria-label="Search"
+                  className="inline-flex h-full shrink-0 items-center justify-center border-l border-slate-200 bg-[#024081] px-3 text-white transition hover:bg-[#036eb6] cursor-pointer"
+                >
+                  <Search className="h-4 w-4" aria-hidden />
+                </button>
+              </div>
+            </form>
             <button
               type="button"
               className="inline-flex rounded-lg border border-slate-200 p-2 text-slate-700 transition hover:bg-slate-100 xl:hidden"
@@ -211,21 +239,29 @@ export function Header() {
               )}
             </div>
 
-            <div className="mt-auto space-y-2 border-t border-slate-100 p-4">
-              <a
-                href="/paper-submission"
-                className="block w-full rounded-lg bg-[#024081] py-3 text-center text-sm font-semibold text-white"
-                onClick={() => setMobileOpen(false)}
-              >
-                Submit Paper
-              </a>
-              <a
-                href="/payment"
-                className="block w-full rounded-lg border border-blue-200 py-3 text-center text-sm font-semibold text-[#024081]"
-                onClick={() => setMobileOpen(false)}
-              >
-                Pay Now
-              </a>
+            <div className="mt-auto border-t border-slate-100 p-4">
+              <form onSubmit={handleSearch} role="search">
+                <label htmlFor="header-search-mobile" className="sr-only">
+                  Search papers
+                </label>
+                <div className="flex h-11 items-center overflow-hidden rounded-lg border border-slate-200 bg-white transition focus-within:border-[#036eb6] focus-within:ring-2 focus-within:ring-[#036eb6]/20">
+                  <input
+                    id="header-search-mobile"
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Search papers..."
+                    className="h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-sm text-[#092151] outline-none placeholder:text-[#858c93]"
+                  />
+                  <button
+                    type="submit"
+                    aria-label="Search"
+                    className="inline-flex h-full shrink-0 items-center justify-center border-l border-slate-200 bg-[#024081] px-4 text-white transition hover:bg-[#036eb6]"
+                  >
+                    <Search className="h-4 w-4" aria-hidden />
+                  </button>
+                </div>
+              </form>
             </div>
           </nav>
         </>

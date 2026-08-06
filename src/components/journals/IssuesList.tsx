@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ChevronRight, Clock, FileText, Loader2 } from "lucide-react";
-import { formatToIST } from "@/src/lib/formatDate";
+import { ChevronRight, FileText, Loader2 } from "lucide-react";
 import type { JournalIssue } from "@/src/types/issue";
 
 type IssuesListProps = {
@@ -48,10 +47,10 @@ export default function IssuesList({ journalId, issues, isLoading }: IssuesListP
                 {issue.title ? (
                   <p className="mt-1 text-sm text-[#858c93]">{issue.title}</p>
                 ) : null}
-                <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[#858c93]">
+                {/* <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[#858c93]">
                   <Clock className="h-3.5 w-3.5 text-[#036eb6]" aria-hidden />
                   Published {formatToIST(issue.created_at)}
-                </p>
+                </p> */}
               </div>
 
               <div className="flex shrink-0 items-center gap-2">
