@@ -26,3 +26,28 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
+
+/* Keep hero swiper width constrained on small screens */
+.hero-swiper {
+  width: 100%;
+  max-width: 100%;
+}
+
+.hero-swiper .swiper-slide {
+  width: 100%;
+  height: auto;
+}
+
+.hero-swiper .swiper-pagination {
+  position: relative;
+  margin-top: 0.75rem;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background: #036eb6;
+  opacity: 0.35;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+}

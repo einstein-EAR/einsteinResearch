@@ -40,13 +40,16 @@ export function ReusableContentSlider({
   const hasFixedImageSize = Boolean(imageWidth && imageHeight);
 
   return (
-    <div className={className}>
+    <div className={`w-full min-w-0 ${className}`}>
       <Swiper
         modules={[Autoplay, Pagination]}
         slidesPerView={slidesPerView}
         spaceBetween={spaceBetween}
         breakpoints={breakpoints}
         loop={loop ?? images.length > 1}
+        watchOverflow
+        observer
+        observeParents
         autoplay={
           autoplay
             ? {
@@ -56,37 +59,33 @@ export function ReusableContentSlider({
             : false
         }
         pagination={pagination ? { clickable: true } : false}
-        className="hero-swiper"
+        className="hero-swiper !w-full"
       >
         {images.map((image, index) => (
-          <SwiperSlide key={`${image}-${index}`}>
-            <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-blue-100 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
-              <div
-                className={
-                  hasFixedImageSize ? "flex items-center justify-center" : "relative aspect-4/3 w-full"
-                }
-              >
-                {hasFixedImageSize ? (
-                  <Image
-                    src={image}
-                    alt={`${imageAltPrefix} ${index + 1}`}
-                    width={imageWidth}
-                    height={imageHeight}
-                    className={imageClassName}
-                    priority={index === 0}
-                  />
-                ) : (
-                  <Image
-                    src={image}
-                    alt={`${imageAltPrefix} ${index + 1}`}
-                    fill
-                    className={imageClassName}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority={index === 0}
-                  />
-                )}
+          <SwiperSlide key={`${image}-${index}`} className="!h-auto w-full">
+            {hasFixedImageSize ? (
+              <div className="flex w-full items-center justify-center overflow-hidden rounded-xl bg-white">
+                <Image
+                  src={image}
+                  alt={`${imageAltPrefix} ${index + 1}`}
+                  width={imageWidth}
+                  height={imageHeight}
+                  className={`h-auto max-w-full ${imageClassName}`}
+                  priority={index === 0}
+                />
               </div>
-            </div>
+            ) : (
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100 sm:aspect-[16/10]">
+                <Image
+                  src={image}
+                  alt={`${imageAltPrefix} ${index + 1}`}
+                  fill
+                  className={imageClassName}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority={index === 0}
+                />
+              </div>
+            )}
           </SwiperSlide>
         ))}
       </Swiper>

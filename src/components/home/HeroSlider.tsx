@@ -14,9 +14,9 @@ export function HeroSlider() {
   const images = slides.map((slide) => slide.image);
 
   return (
-    <section className="w-full px-4 py-8 sm:px-6 md:px-12 md:py-10">
-      <div className="mx-auto grid w-full max-w-[1440px] items-center gap-8 lg:grid-cols-2 lg:gap-12">
-        <div className="order-2 space-y-6 lg:order-1">
+    <section className="w-full overflow-x-hidden px-4 py-8 sm:px-6 md:px-12 md:py-10">
+      <div className="mx-auto grid w-full max-w-[1440px] items-center gap-6 sm:gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="order-2 min-w-0 space-y-6 lg:order-1">
           <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#036eb6]">
             UGC-certified · Open access · Monthly journal
           </div>
@@ -76,8 +76,8 @@ export function HeroSlider() {
           </div>
         </div>
 
-        <div className="order-1 lg:order-2">
-          <div className="overflow-hidden rounded-3xl border border-blue-100 bg-white p-3 shadow-lg">
+        <div className="order-1 w-full min-w-0 lg:order-2">
+          <div className="w-full overflow-hidden rounded-2xl border border-blue-100 bg-white p-2 shadow-lg sm:rounded-3xl sm:p-3">
             <ReusableContentSlider
               images={images}
               autoplay
