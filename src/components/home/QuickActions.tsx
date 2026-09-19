@@ -46,7 +46,7 @@ export function QuickActions() {
           </div>
         </div>
 
-        <div className="grid items-center gap-8 overflow-hidden rounded-3xl border border-[#ededed] bg-white shadow-md lg:grid-cols-2">
+        {/* <div className="grid items-center gap-8 overflow-hidden rounded-3xl border border-[#ededed] bg-white shadow-md lg:grid-cols-2">
           <div className="p-6 sm:p-8 lg:p-10">
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#036eb6]">
               About the journal
@@ -67,7 +67,7 @@ export function QuickActions() {
               className="h-auto w-full max-w-md object-contain"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

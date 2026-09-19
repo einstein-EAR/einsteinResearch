@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { navItems, site } from "./homeData";
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -44,6 +45,7 @@ const navLinkClass =
 
 export function Header() {
   const router = useRouter();
+  const { data: siteSettings } = useSiteSettings();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,6 +56,12 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  const issn = siteSettings?.issn ?? site.issn;
+  const email = siteSettings?.email ?? site.email;
+  const phone = siteSettings?.phone ?? site.phone;
+  const logoImage = siteSettings?.iconImage;
+  const logoAlt = siteSettings?.title ?? site.name;
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,20 +77,20 @@ export function Header() {
       <div className="hidden border-b border-[#024081]/30 bg-linear-to-r from-[#024081] via-[#036eb6] to-[#024081] text-white sm:block">
         <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-2.5 lg:px-8">
           <p className="text-xs text-blue-100">
-            ISSN 2455-6211 · Impact Factor 9.175 · UGC-certified · Peer-reviewed
+            ISSN {issn} · UGC-certified · Peer-reviewed
           </p>
           <div className="flex flex-wrap items-center gap-4 text-xs text-blue-100">
-            <a href={`mailto:${site.email}`} className="transition hover:text-white">
-              {site.email}
+            <a href={`mailto:${email}`} className="transition hover:text-white">
+              {email}
             </a>
             <span className="hidden text-blue-300/80 md:inline" aria-hidden>
               |
             </span>
             <a
-              href={`tel:${site.phone.replace(/\s/g, "")}`}
+              href={`tel:${phone.replace(/\s/g, "")}`}
               className="transition hover:text-white"
             >
-              {site.phone}
+              {phone}
             </a>
           </div>
         </div>
@@ -90,13 +98,24 @@ export function Header() {
 
       <div className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-3 lg:px-8">
-          <Link href="/" className="min-w-0 shrink">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#036eb6] sm:text-xs">
-              {site.name}
-            </p>
-            <p className="truncate text-base font-bold text-[#092151] sm:text-lg">
-              {site.tagline}
-            </p>
+          <Link href="/" className="flex min-w-0 shrink items-center">
+            {logoImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logoImage}
+                alt={logoAlt}
+                className="h-10 w-auto max-w-[180px] object-contain sm:h-11 sm:max-w-[220px]"
+              />
+            ) : (
+              <>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#036eb6] sm:text-xs">
+                  {site.name}
+                </p>
+                <p className="truncate text-base font-bold text-[#092151] sm:text-lg">
+                  {site.tagline}
+                </p>
+              </>
+            )}
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-3">

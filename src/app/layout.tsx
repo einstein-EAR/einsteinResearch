@@ -6,6 +6,7 @@ import { Header } from "@/src/components/home/Header";
 import { Footer } from "@/src/components/home/Footer";
 import { SideMenuProvider } from "@/src/components/layout/SideMenuProvider";
 import { QueryProvider } from "@/src/providers/QueryProvider";
+import { SiteFavicon } from "@/src/components/layout/SiteFavicon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-slate-50">
         <QueryProvider>
+          <SiteFavicon />
           <SideMenuProvider>
             <Header />
             <main className="flex min-h-0 flex-1 flex-col">{children}</main>
