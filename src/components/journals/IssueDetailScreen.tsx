@@ -13,15 +13,20 @@ import { useGetIssueById } from "@/src/hooks";
 type IssueDetailScreenProps = {
   journalId: string;
   issueId: string;
+  basePath?: string;
 };
 
-export default function IssueDetailScreen({ journalId, issueId }: IssueDetailScreenProps) {
+export default function IssueDetailScreen({
+  journalId,
+  issueId,
+  basePath = "/journals",
+}: IssueDetailScreenProps) {
   const { data: issue, isLoading, isError, error } = useGetIssueById(issueId);
 
   return (
     <>
       <Link
-        href={`/journals?journalId=${journalId}`}
+        href={`${basePath}?journalId=${journalId}`}
         className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#024081] transition hover:text-[#036eb6]"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />

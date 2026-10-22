@@ -29,8 +29,8 @@ export const navItems: NavLink[] = [
   //     href: `/volumes/${volume.id}`,
   //   })),
   // },
-  { label: "Indexing", href: "/indexing" },
-  { label: "Conferences", href: "/#conferences" },
+  // { label: "Indexing", href: "/indexing" },
+  { label: "Conferences", href: "/conferences" },
   { label: "Contact", href: "/contactUs" },
 ];
 
@@ -184,33 +184,6 @@ export const editorNote = {
 };
 
 export const journalAboutText = `The journal covers all the research journal areas like engineering, education, science, technology, biometrics, management, Artificial Intelligence, Robotics, Medical Sciences, Agricultural Sciences, Dental Sciences, health care, law, Arts & humanities and many more. IJARESM publishes original research articles, review articles and technical notes, dissertation, thesis and conference proceedings. The journal reviews papers within 24 hours of submission and publishes accepted articles on the web immediately upon receiving the final versions and processing charges. IJARESM Publication in India is a lowest cost publication house which works on the principle of No profit No loss and publish paper in ugc approved journal. IJARESM International Editorial/Reviewer Board representing many well-known Colleges/Institutions, Universities and Organizations worldwide.`;
-
-export const latestUpdates = [
-  {
-    title: "2026 author submission window now open",
-    date: "15 May 2026",
-    excerpt: "Manuscripts across engineering, education, and health sciences are welcome.",
-    href: "/updates/2026-submissions",
-  },
-  {
-    title: "New indexing partners added",
-    date: "02 Apr 2026",
-    excerpt: "Expanded discoverability through additional scholarly databases.",
-    href: "/updates/indexing-2026",
-  },
-  {
-    title: "Peer review turnaround improvements",
-    date: "18 Mar 2026",
-    excerpt: "Average first decision now within 48 hours for eligible submissions.",
-    href: "/updates/review-timeline",
-  },
-  {
-    title: "Conference proceedings bundle",
-    date: "07 Feb 2026",
-    excerpt: "Publish your conference papers with unified ISBN and proceedings format.",
-    href: "/updates/conference-bundle",
-  },
-];
 
 export const strengths = [
   "Dedicated author support desk — online and phone.",

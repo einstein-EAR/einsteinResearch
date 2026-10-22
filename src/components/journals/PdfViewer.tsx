@@ -8,7 +8,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
-import { useGetIssueById } from "@/src/hooks";
+import { useGetIssueById, useGetJournalById } from "@/src/hooks";
 
 type PdfViewerProps = {
   journalId: string;
@@ -18,8 +18,9 @@ type PdfViewerProps = {
 
 export default function PdfViewer({ journalId, issueId, pdfId }: PdfViewerProps) {
   const { data: issue, isLoading, isError, error } = useGetIssueById(issueId);
-
-  const backHref = `/journals?journalId=${journalId}&issueId=${issueId}`;
+  const { data: journal } = useGetJournalById(journalId);
+  const basePath = journal?.category === "conference" ? "/conferences" : "/journals";
+  const backHref = `${basePath}?journalId=${journalId}&issueId=${issueId}`;
   const pdf = issue?.pdfs.find((item) => item._id === pdfId);
 
   if (isLoading) {

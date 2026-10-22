@@ -8,9 +8,15 @@ type IssuesListProps = {
   journalId: string;
   issues: JournalIssue[];
   isLoading?: boolean;
+  basePath?: string;
 };
 
-export default function IssuesList({ journalId, issues, isLoading }: IssuesListProps) {
+export default function IssuesList({
+  journalId,
+  issues,
+  isLoading,
+  basePath = "/journals",
+}: IssuesListProps) {
   const router = useRouter();
 
   if (isLoading) {
@@ -37,7 +43,7 @@ export default function IssuesList({ journalId, issues, isLoading }: IssuesListP
           <button
             type="button"
             onClick={() =>
-              router.push(`/journals?journalId=${journalId}&issueId=${issue._id}`)
+              router.push(`${basePath}?journalId=${journalId}&issueId=${issue._id}`)
             }
             className="flex w-full overflow-hidden rounded-2xl border border-[#ededed] bg-white p-5 text-left shadow-sm transition hover:border-blue-200 hover:shadow-md sm:p-6 cursor-pointer"
           >

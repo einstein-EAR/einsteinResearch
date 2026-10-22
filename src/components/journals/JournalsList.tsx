@@ -8,17 +8,20 @@ type JournalsListProps = {
   journals: Journal[];
   isLoading?: boolean;
   searchQuery?: string;
+  basePath?: string;
+  itemLabel?: string;
 };
 
 type JournalCardProps = {
   journal: Journal;
+  basePath: string;
 };
 
-function JournalCard({ journal }: JournalCardProps) {
+function JournalCard({ journal, basePath }: JournalCardProps) {
   const router = useRouter();
 
   const openIssues = () => {
-    router.push(`/journals?journalId=${journal._id}`);
+    router.push(`${basePath}?journalId=${journal._id}`);
   };
 
   return (
@@ -76,12 +79,16 @@ export default function JournalsList({
   journals,
   isLoading,
   searchQuery,
+  basePath = "/journals",
+  itemLabel = "journal",
 }: JournalsListProps) {
+  const plural = `${itemLabel}s`;
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center gap-2 py-16 text-sm font-medium text-[#036eb6]">
         <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
-        Loading journals...
+        Loading {plural}...
       </div>
     );
   }
@@ -90,8 +97,8 @@ export default function JournalsList({
     return (
       <div className="rounded-2xl border border-[#ededed] bg-white px-6 py-16 text-center text-sm text-[#858c93] shadow-sm">
         {searchQuery
-          ? `No journals found for “${searchQuery}”.`
-          : "No journals published yet. Please check back soon."}
+          ? `No ${plural} found for “${searchQuery}”.`
+          : `No ${plural} published yet. Please check back soon.`}
       </div>
     );
   }
@@ -100,7 +107,7 @@ export default function JournalsList({
     <section className="w-full">
       <div className="mb-6 rounded-2xl bg-linear-to-r from-[#024081] to-[#036eb6] px-6 py-4 text-white shadow-md">
         <p className="text-sm font-medium text-blue-100">
-          <span className="text-white">{journals.length}</span> journal
+          <span className="text-white">{journals.length}</span> {itemLabel}
           {journals.length === 1 ? "" : "s"}
           {searchQuery ? " matched" : " published"}
         </p>
@@ -108,7 +115,7 @@ export default function JournalsList({
 
       <div className="flex flex-col gap-5">
         {journals.map((journal) => (
-          <JournalCard key={journal._id} journal={journal} />
+          <JournalCard key={journal._id} journal={journal} basePath={basePath} />
         ))}
       </div>
     </section>
