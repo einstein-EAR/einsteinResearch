@@ -1,5 +1,5 @@
 import {
-  latestUpdates,
+
   sidebarExplore,
   sidebarResources,
   site,
@@ -57,7 +57,7 @@ export function HomeSidebar() {
         ))}
       </SidebarCard>
 
-      <SidebarCard title="Latest updates" description="News from the editorial desk">
+      {/* <SidebarCard title="Latest updates" description="News from the editorial desk">
         <ul className="space-y-1 p-1">
           {latestUpdates.map((item) => (
             <li key={item.title}>
@@ -76,7 +76,7 @@ export function HomeSidebar() {
             </li>
           ))}
         </ul>
-      </SidebarCard>
+      </SidebarCard> */}
 
       <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 p-5 text-white shadow-md">
         <p className="text-xs font-semibold uppercase tracking-wider text-indigo-200">

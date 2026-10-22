@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { useSiteSettings } from "@/src/hooks/useSiteSettings";
 import { navItems, site } from "./homeData";
@@ -40,15 +40,50 @@ function CloseIcon() {
   );
 }
 
-const navLinkClass =
-  "rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors duration-300 hover:bg-white hover:text-[#024081] hover:shadow-sm";
+const navLinkBase =
+  "rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-300";
+
+function getNavLinkClass(isActive: boolean) {
+  return isActive
+    ? `${navLinkBase} bg-[#024081] text-white shadow-sm`
+    : `${navLinkBase} text-slate-700 hover:bg-white hover:text-[#024081] hover:shadow-sm`;
+}
+
+function getMobileNavLinkClass(isActive: boolean) {
+  return isActive
+    ? "rounded-lg border-l-2 border-[#024081] bg-blue-50 px-3 py-3 text-sm font-semibold text-[#024081]"
+    : "rounded-lg px-3 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50";
+}
+
+function getDropdownChildClass(isActive: boolean) {
+  return isActive
+    ? "block bg-blue-50 px-4 py-2 text-sm font-semibold text-[#024081]"
+    : "block px-4 py-2 text-sm text-slate-600 transition hover:bg-blue-50 hover:text-[#024081]";
+}
+
+function isNavLinkActive(pathname: string, hash: string, href: string) {
+  const [path, linkHash] = href.split("#");
+  const normalizedPath = path || "/";
+
+  if (linkHash) {
+    return pathname === normalizedPath && hash === `#${linkHash}`;
+  }
+
+  if (normalizedPath === "/") {
+    return pathname === "/" && !hash;
+  }
+
+  return pathname === normalizedPath || pathname.startsWith(`${normalizedPath}/`);
+}
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: siteSettings } = useSiteSettings();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [hash, setHash] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -56,6 +91,13 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    const updateHash = () => setHash(window.location.hash);
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
 
   const issn = siteSettings?.issn ?? site.issn;
   const email = siteSettings?.email ?? site.email;
@@ -162,31 +204,48 @@ export function Header() {
           aria-label="Main navigation"
         >
           <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center gap-1 px-4 py-2 lg:px-8">
-            {navItems.map((item) =>
-              item.children ? (
+            {navItems.map((item) => {
+              const itemActive =
+                isNavLinkActive(pathname, hash, item.href) ||
+                item.children?.some((child) => isNavLinkActive(pathname, hash, child.href));
+
+              return item.children ? (
                 <div key={item.label} className="group relative">
-                  <a href={item.href} className={`inline-flex items-center gap-1 ${navLinkClass}`}>
+                  <a
+                    href={item.href}
+                    className={`inline-flex items-center gap-1 ${getNavLinkClass(Boolean(itemActive))}`}
+                    aria-current={itemActive ? "page" : undefined}
+                  >
                     {item.label}
                     <ChevronIcon open={false} />
                   </a>
                   <div className="invisible absolute left-0 top-full z-50 min-w-[220px] rounded-xl border border-slate-200 bg-white py-2 opacity-0 shadow-lg transition-all duration-300 group-hover:visible group-hover:opacity-100">
-                    {item.children.map((child) => (
-                      <a
-                        key={child.label}
-                        href={child.href}
-                        className="block px-4 py-2 text-sm text-slate-600 transition hover:bg-blue-50 hover:text-[#024081]"
-                      >
-                        {child.label}
-                      </a>
-                    ))}
+                    {item.children.map((child) => {
+                      const childActive = isNavLinkActive(pathname, hash, child.href);
+                      return (
+                        <a
+                          key={child.label}
+                          href={child.href}
+                          className={getDropdownChildClass(childActive)}
+                          aria-current={childActive ? "page" : undefined}
+                        >
+                          {child.label}
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               ) : (
-                <a key={item.label} href={item.href} className={navLinkClass}>
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={getNavLinkClass(isNavLinkActive(pathname, hash, item.href))}
+                  aria-current={isNavLinkActive(pathname, hash, item.href) ? "page" : undefined}
+                >
                   {item.label}
                 </a>
-              ),
-            )}
+              );
+            })}
           </div>
         </nav>
       </div>
@@ -216,32 +275,41 @@ export function Header() {
             </div>
 
             <div className="flex flex-col gap-1 p-4">
-              {navItems.map((item) =>
-                item.children ? (
+              {navItems.map((item) => {
+                const itemActive =
+                  isNavLinkActive(pathname, hash, item.href) ||
+                  item.children?.some((child) => isNavLinkActive(pathname, hash, child.href));
+
+                return item.children ? (
                   <div key={item.label}>
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-800 hover:bg-slate-50"
+                      className={`flex w-full items-center justify-between text-left ${getMobileNavLinkClass(Boolean(itemActive))}`}
                       onClick={() =>
                         setExpandedMobile((v) => (v === item.label ? null : item.label))
                       }
                       aria-expanded={expandedMobile === item.label}
+                      aria-current={itemActive ? "page" : undefined}
                     >
                       {item.label}
                       <ChevronIcon open={expandedMobile === item.label} />
                     </button>
                     {expandedMobile === item.label && (
                       <div className="ml-3 space-y-1 border-l-2 border-blue-100 pl-3">
-                        {item.children.map((child) => (
-                          <a
-                            key={child.label}
-                            href={child.href}
-                            className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-[#024081]"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            {child.label}
-                          </a>
-                        ))}
+                        {item.children.map((child) => {
+                          const childActive = isNavLinkActive(pathname, hash, child.href);
+                          return (
+                            <a
+                              key={child.label}
+                              href={child.href}
+                              className={getMobileNavLinkClass(childActive)}
+                              onClick={() => setMobileOpen(false)}
+                              aria-current={childActive ? "page" : undefined}
+                            >
+                              {child.label}
+                            </a>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -249,13 +317,14 @@ export function Header() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="rounded-lg px-3 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50"
+                    className={getMobileNavLinkClass(isNavLinkActive(pathname, hash, item.href))}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={isNavLinkActive(pathname, hash, item.href) ? "page" : undefined}
                   >
                     {item.label}
                   </a>
-                ),
-              )}
+                );
+              })}
             </div>
 
             <div className="mt-auto border-t border-slate-100 p-4">

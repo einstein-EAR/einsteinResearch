@@ -1,7 +1,7 @@
 "use client";
 
 import { useApiGet } from "@/src/lib/api";
-import type { Journal } from "@/src/types/journal";
+import type { Journal, JournalCategory } from "@/src/types/journal";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import type { ApiError } from "@/src/lib/api";
 
@@ -13,9 +13,14 @@ type UseJournalsOptions = Omit<
 >;
 
 export function useGetJournals(
-  options?: UseJournalsOptions,
+  options?: UseJournalsOptions & { category?: JournalCategory },
 ): UseQueryResult<Journal[], ApiError> {
-  return useApiGet<Journal[]>(JOURNALS_QUERY_KEY, "/journals", options);
+  const { category, ...queryOptions } = options ?? {};
+
+  return useApiGet<Journal[]>(JOURNALS_QUERY_KEY, "/journals", {
+    ...queryOptions,
+    params: category ? { category } : undefined,
+  });
 }
 
 type UseJournalByIdOptions = Omit<
