@@ -5,7 +5,6 @@ import "./globals.css";
 import { site } from "@/src/components/home/homeData";
 import { Header } from "@/src/components/home/Header";
 import { Footer } from "@/src/components/home/Footer";
-import { SideMenuProvider } from "@/src/components/layout/SideMenuProvider";
 import { QueryProvider } from "@/src/providers/QueryProvider";
 import { SiteFavicon } from "@/src/components/layout/SiteFavicon";
 
@@ -52,11 +51,9 @@ export default function RootLayout({
         </Script>
         <QueryProvider>
           <SiteFavicon />
-          <SideMenuProvider>
-            <Header />
-            <main className="flex min-h-0 flex-1 flex-col">{children}</main>
-            <Footer />
-          </SideMenuProvider>
+          <Header />
+          <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+          <Footer />
         </QueryProvider>
       </body>
     </html>

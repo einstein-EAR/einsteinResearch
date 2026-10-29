@@ -78,3 +78,47 @@ body {
   border-radius: 9999px;
   background: #ffffff;
 }
+
+.publication-ethics-html {
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.publication-ethics-html b.ethics-heading {
+  display: block;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: #092151;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.publication-ethics-html > b.ethics-heading:first-child {
+  margin-top: 0;
+  font-size: 1.35rem;
+}
+
+.publication-ethics-html div {
+  margin-bottom: 0.85rem;
+}
+
+.scroll-reveal-pending {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.scroll-reveal-pending.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal-pending {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

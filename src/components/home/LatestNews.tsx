@@ -5,36 +5,32 @@ import { ArrowRight, CalendarDays, Loader2, Newspaper } from "lucide-react";
 import { useLatestNews } from "@/src/hooks";
 import { formatNewsDate } from "@/src/lib/formatDate";
 
+const EXCERPT_MAX_LENGTH = 150;
+
+function truncateExcerpt(excerpt: string) {
+  const text = excerpt.trim();
+  if (text.length <= EXCERPT_MAX_LENGTH) return text;
+  return `${text.slice(0, EXCERPT_MAX_LENGTH - 1).trimEnd()}…`;
+}
+
 export function LatestNews() {
   const { data: newsItems = [], isLoading, isError } = useLatestNews();
   const featuredItems = newsItems.slice(0, 4);
 
   return (
-    <section className="w-full bg-[#f4f8fc] px-4 py-10 sm:px-6 md:px-12 md:py-14">
+    <section className="scroll-reveal w-full bg-[#f4f8fc] px-4 py-6 sm:px-6 md:px-12 md:py-8">
       <div className="mx-auto w-full max-w-[1440px]">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#036eb6]">
-              Editorial desk
-            </p>
-            <h2 className="mt-2 text-2xl font-bold text-[#092151] sm:text-3xl lg:text-4xl">
-              Latest{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-[#024081] to-[#036eb6]">
-                news &amp; updates
-              </span>
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm text-[#858c93] sm:text-base">
-              Stay informed about submissions, indexing, review timelines, and special
-              announcements from IJARESM.
-            </p>
-          </div>
-          <Link
-            href="/updates"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#036eb6] transition hover:text-[#024081]"
-          >
-            View all updates
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
+        <div className="mb-8">
+          <h2 className="mt-2 text-2xl font-bold text-[#092151] sm:text-3xl lg:text-4xl">
+            Latest{" "}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#024081] to-[#036eb6]">
+              news &amp; updates
+            </span>
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-[#858c93] sm:text-base">
+            Stay informed about submissions, indexing, review timelines, and special
+            announcements from ER Publications.
+          </p>
         </div>
 
         {isLoading ? (
@@ -86,7 +82,7 @@ export function LatestNews() {
                     {item.title}
                   </h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-[#858c93]">
-                    {item.excerpt}
+                    {truncateExcerpt(item.excerpt)}
                   </p>
                   <Link
                     href={`/updates/${item._id}`}
