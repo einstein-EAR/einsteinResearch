@@ -45,7 +45,7 @@ export function LatestNewsDetail({ newsId }: { newsId: string }) {
         <h1 className="text-2xl font-bold text-[#092151] sm:text-3xl">{item.title}</h1>
         <p className="mt-4 text-base leading-relaxed text-[#334155]">{item.excerpt}</p>
         <Link
-          href="/updates"
+          href="/"
           className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#036eb6]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />

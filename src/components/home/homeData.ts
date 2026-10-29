@@ -31,6 +31,7 @@ export const navItems: NavLink[] = [
   // },
   // { label: "Indexing", href: "/indexing" },
   { label: "Conferences", href: "/conferences" },
+  { label: "Publication Ethics", href: "/publication-ethics" },
   { label: "Contact", href: "/contactUs" },
 ];
 
@@ -87,21 +88,6 @@ export const quickCards = [
     accent: "from-cyan-600 to-teal-600",
     icon: CreditCardIcon,
   },
-];
-
-export const sidebarResources = [
-  { label: "Author Guidelines", href: "/downloads/author-guidelines" },
-  { label: "Copyright Agreement", href: "/downloads/copyright-form" },
-  { label: "Manuscript Template", href: "/downloads/paper-template" },
-  { label: "Processing Charges", href: "/processing-charges" },
-];
-
-export const sidebarExplore = [
-  { label: "Call for Papers", href: "/call-for-papers" },
-  { label: "Why ER Publications", href: "/why-er" },
-  { label: "Subject Areas", href: "/topics" },
-  { label: "Special Issues", href: "/special-issues" },
-  { label: "Publication Ethics", href: "/publication-ethics" },
 ];
 
 export const clientLogos = [

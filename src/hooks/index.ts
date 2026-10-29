@@ -9,3 +9,7 @@ export {
   useLatestNewsById,
   LATEST_NEWS_QUERY_KEY,
 } from "./useLatestNews";
+export {
+  usePublicationEthics,
+  PUBLICATION_ETHICS_QUERY_KEY,
+} from "./usePublicationEthics";

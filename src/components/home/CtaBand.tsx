@@ -3,7 +3,7 @@ import { ReusableContentSlider } from "./ReusableContentSlider";
 
 export function CtaBand() {
   return (
-    <section className="w-full bg-white px-4 py-10 sm:px-6 md:px-12">
+    <section className="scroll-reveal w-full bg-white px-4 py-10 sm:px-6 md:px-12">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-[#092151] sm:text-3xl lg:text-4xl">

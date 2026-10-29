@@ -161,7 +161,7 @@ export default function ContactUsForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="w-full max-w-xl space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+      className="w-full space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
       <div className="space-y-1 border-b border-slate-100 pb-4">
         <h2 className="text-xl font-semibold text-[#092151] sm:text-2xl">
@@ -172,59 +172,83 @@ export default function ContactUsForm() {
         </p>
       </div>
 
-      <FormField
-        id="name"
-        label="Full name"
-        icon={<User className="h-5 w-5" aria-hidden />}
-        error={errors.name}
-      >
-        <input
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField
           id="name"
-          name="name"
-          type="text"
-          autoComplete="name"
-          placeholder="Your full name"
-          value={formData.name}
-          onChange={(e) => updateField("name", e.target.value)}
-          className={fieldClassName}
-        />
-      </FormField>
+          label="Full name"
+          icon={<User className="h-5 w-5" aria-hidden />}
+          error={errors.name}
+        >
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your full name"
+            value={formData.name}
+            onChange={(e) => updateField("name", e.target.value)}
+            className={fieldClassName}
+          />
+        </FormField>
 
-      <FormField
-        id="email"
-        label="Email address"
-        icon={<Mail className="h-5 w-5" aria-hidden />}
-        error={errors.email}
-      >
-        <input
+        <FormField
           id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="your.email@example.com"
-          value={formData.email}
-          onChange={(e) => updateField("email", e.target.value)}
-          className={fieldClassName}
-        />
-      </FormField>
+          label="Email address"
+          icon={<Mail className="h-5 w-5" aria-hidden />}
+          error={errors.email}
+        >
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="your.email@example.com"
+            value={formData.email}
+            onChange={(e) => updateField("email", e.target.value)}
+            className={fieldClassName}
+          />
+        </FormField>
 
-      <FormField
-        id="phone"
-        label="Phone number"
-        icon={<Phone className="h-5 w-5" aria-hidden />}
-        error={errors.phone}
-      >
-        <input
+        <FormField
           id="phone"
-          name="phone"
-          type="tel"
-          autoComplete="tel"
-          placeholder="Your phone number"
-          value={formData.phone}
-          onChange={(e) => updateField("phone", e.target.value)}
-          className={fieldClassName}
-        />
-      </FormField>
+          label="Phone number"
+          icon={<Phone className="h-5 w-5" aria-hidden />}
+          error={errors.phone}
+        >
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            placeholder="Your phone number"
+            value={formData.phone}
+            onChange={(e) => updateField("phone", e.target.value)}
+            className={fieldClassName}
+          />
+        </FormField>
+
+        <FormField
+          id="country"
+          label="Country"
+          icon={<Globe className="h-5 w-5" aria-hidden />}
+          error={errors.country}
+        >
+          <select
+            id="country"
+            name="country"
+            value={formData.country}
+            onChange={(e) => updateField("country", e.target.value)}
+            className={`${fieldClassName} cursor-pointer`}
+          >
+            <option value="">Select your country</option>
+            {countries.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+        </FormField>
+      </div>
 
       <FormField
         id="subject"
@@ -241,28 +265,6 @@ export default function ContactUsForm() {
           onChange={(e) => updateField("subject", e.target.value)}
           className={fieldClassName}
         />
-      </FormField>
-
-      <FormField
-        id="country"
-        label="Country"
-        icon={<Globe className="h-5 w-5" aria-hidden />}
-        error={errors.country}
-      >
-        <select
-          id="country"
-          name="country"
-          value={formData.country}
-          onChange={(e) => updateField("country", e.target.value)}
-          className={`${fieldClassName} cursor-pointer`}
-        >
-          <option value="">Select your country</option>
-          {countries.map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.name}
-            </option>
-          ))}
-        </select>
       </FormField>
 
       <FormField
